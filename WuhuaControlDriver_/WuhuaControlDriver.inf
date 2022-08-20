@@ -1,0 +1,83 @@
+;
+; WuhuaControlDriver.inf
+;
+
+[Version]
+Signature="$WINDOWS NT$"
+Class=System ; TODO: specify appropriate Class
+ClassGuid={4d36e97d-e325-11ce-bfc1-08002be10318} ; TODO: specify appropriate ClassGuid
+Provider=%ManufacturerName%
+CatalogFile=WuhuaControlDriver.cat
+DriverVer= ; TODO: set DriverVer in stampinf property pages
+PnpLockdown=1
+
+[DestinationDirs]
+DefaultDestDir = 12
+WuhuaControlDriver_Device_CoInstaller_CopyFiles = 11
+
+[SourceDisksNames]
+1 = %DiskName%,,,""
+
+[SourceDisksFiles]
+WuhuaControlDriver.sys  = 1,,
+WdfCoInstaller$KMDFCOINSTALLERVERSION$.dll=1 ; make sure the number matches with SourceDisksNames
+
+;*****************************************
+; Install Section
+;*****************************************
+
+[Manufacturer]
+%ManufacturerName%=Standard,NT$ARCH$
+
+[Standard.NT$ARCH$]
+%WuhuaControlDriver.DeviceDesc%=WuhuaControlDriver_Device, Root\WuhuaControlDriver ; TODO: edit hw-id
+
+[WuhuaControlDriver_Device.NT]
+CopyFiles=Drivers_Dir
+
+[Drivers_Dir]
+WuhuaControlDriver.sys
+
+;-------------- Service installation
+[WuhuaControlDriver_Device.NT.Services]
+AddService = WuhuaControlDriver,%SPSVCINST_ASSOCSERVICE%, WuhuaControlDriver_Service_Inst
+
+; -------------- WuhuaControlDriver driver install sections
+[WuhuaControlDriver_Service_Inst]
+DisplayName    = %WuhuaControlDriver.SVCDESC%
+ServiceType    = 1               ; SERVICE_KERNEL_DRIVER
+StartType      = 3               ; SERVICE_DEMAND_START
+ErrorControl   = 1               ; SERVICE_ERROR_NORMAL
+ServiceBinary  = %12%\WuhuaControlDriver.sys
+
+;
+;--- WuhuaControlDriver_Device Coinstaller installation ------
+;
+
+[WuhuaControlDriver_Device.NT.CoInstallers]
+AddReg=WuhuaControlDriver_Device_CoInstaller_AddReg
+CopyFiles=WuhuaControlDriver_Device_CoInstaller_CopyFiles
+
+[WuhuaControlDriver_Device_CoInstaller_AddReg]
+HKR,,CoInstallers32,0x00010000, "WdfCoInstaller$KMDFCOINSTALLERVERSION$.dll,WdfCoInstaller"
+
+[WuhuaControlDriver_Device_CoInstaller_CopyFiles]
+WdfCoInstaller$KMDFCOINSTALLERVERSION$.dll
+
+[WuhuaControlDriver_Device.NT.Wdf]
+KmdfService =  WuhuaControlDriver, WuhuaControlDriver_wdfsect
+[WuhuaControlDriver_wdfsect]
+KmdfLibraryVersion = $KMDFVERSION$
+
+[WuhuaControlDriver_Device.NT.HW]
+AddReg = WuhuaControlDriver_Device.NT.AddReg
+
+[WuhuaControlDriver_Device.NT.AddReg]
+HKR,,"LowerFilters",0x00010000,"vhf"
+
+[Strings]
+SPSVCINST_ASSOCSERVICE= 0x00000002
+ManufacturerName="<Your manufacturer name>" ;TODO: Replace with your manufacturer name
+DiskName = "WuhuaControlDriver Installation Disk"
+WuhuaControlDriver.DeviceDesc = "WuhuaControlDriver Device"
+WuhuaControlDriver.SVCDESC = "WuhuaControlDriver Service"
