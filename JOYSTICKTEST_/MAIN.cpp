@@ -1,10 +1,10 @@
 #include<iostream>
 #include<windows.h>
 #define DEVICE_SYM L"\\\\.\\WuhuaController"
-//���豸
+//¶ÁÉè±¸
 #define READ_CTL_CODE CTL_CODE(FILE_DEVICE_UNKNOWN,0x830,METHOD_BUFFERED,FILE_READ_ACCESS)
 
-//д�豸
+//Ð´Éè±¸
 #define WRITE_CTL_CODE CTL_CODE(FILE_DEVICE_UNKNOWN,0x831,METHOD_BUFFERED,FILE_WRITE_ACCESS)
 
 struct
@@ -112,19 +112,6 @@ int main()
 		printf("Sending SUCCESS %d times remaning\n", i);
 
 	}
-	//do
-	//{
-	//	UINT8 szData[2] = {0,80};
-	//	char szCache[1024];
-
-	//	system("pause");
-	//	//DeviceIoControl read write
-	//	DWORD dwWriteNumber = WriteDevice(hDevice, szData, sizeof(szData) + 1);
-	//	printf("DeviceIoControl Write:%s,size:%d\n", szData, dwWriteNumber);
-
-	//	system("pause");
-
-	//} while (FALSE);
 
 	CloseHandle(hDevice);
 	system("pause");
