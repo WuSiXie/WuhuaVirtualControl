@@ -1,11 +1,6 @@
 #include<iostream>
 #include<windows.h>
 #define DEVICE_SYM L"\\\\.\\WuhuaController"
-//¶ÁÉè±¸
-#define READ_CTL_CODE CTL_CODE(FILE_DEVICE_UNKNOWN,0x830,METHOD_BUFFERED,FILE_READ_ACCESS)
-
-//Ð´Éè±¸
-#define WRITE_CTL_CODE CTL_CODE(FILE_DEVICE_UNKNOWN,0x831,METHOD_BUFFERED,FILE_WRITE_ACCESS)
 
 struct
 {
